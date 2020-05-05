@@ -1,0 +1,22 @@
+{
+  "name": "udacity-frontend-capstone-traveljournal",
+  "version": "1.0.0",
+  "description": "This project is the final assignment for Udacity Nanodegree program",
+  "main": "./src server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustafabereket/Udacity-FrontEnd-Capstone-TravelJournal.git"
+  },
+  "author": "Mustafa Bereket",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mustafabereket/Udacity-FrontEnd-Capstone-TravelJournal/issues"
+  },
+  "homepage": "https://github.com/mustafabereket/Udacity-FrontEnd-Capstone-TravelJournal#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
