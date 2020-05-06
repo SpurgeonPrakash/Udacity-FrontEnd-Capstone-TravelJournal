@@ -5,6 +5,48 @@
     <title>Title</title>
 </head>
 <body>
-<h2>Lullo</h2>
+    <div class="mainHeader">
+        <div class="headerTitle">
+            <h2>Welcome to Travel Journal</h2>
+        </div>
+        <div >
+            <div class="infoHeader">This site will help you plan and record your upcoming and past trips, it will also provide you some useful information to know ahead of time, like weather forecast.</div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="guide">
+            <label>Click the button to start filing your first trip</label>
+            <button id="addTrip">+ Add a new trip</button>
+        </div>
+        <div class="form-content" id="form-content">
+            <form id="travel-form">
+                <div class="form-group" id="errorMessage">
+
+                </div>
+                <div class="form-group">
+                    <label>Destination</label>
+                    <input type="text" placeholder="Enter a Destination" name="destination">
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="number" placeholder="Days" name="duration">
+                </div>
+                <div class="form-group">
+                    <label>Departure Date</label>
+                    <input type="number" placeholder="Days" name="departure">
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea type="text" placeholder="General Notes about the trip" rows="7" name="notes"></textarea>
+                </div>
+                <div class="form-group">
+                    <button id="cancel">Cancel</button>
+                </div>
+                <div class="form-group">
+                    <button id="save" onclick="Client.addTrip(event)">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&display=swap');
+$main-font: 'Baloo 2';
+$light-font: 400;
+$mid-font: 500;
+$bold-font: 600;
+
+* {
+  font-family: $main-font;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient( 0.25turn , rgba(73, 185, 218, 0.57), #ebf8e1 , rgba(73, 185, 218, 0.57));
+  .mainHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    .infoHeader {
+      font-size: 1.2em;
+      width: 80%;
+      margin: auto;
+    }
+  }
+}
