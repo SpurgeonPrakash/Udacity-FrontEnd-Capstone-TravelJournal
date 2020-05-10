@@ -15,19 +15,73 @@
   }
   .form-content {
     display: none;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 10px;
+      input, textarea, label {
+        border-radius: 10px;
+        padding: 5px;
+        font-size: 1.2em;
+      }
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: row;
+    }
     .options {
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       .group {
         color: white;
-        font-size: 1.2em;
+        font-size: 1.1em;
         padding: 2px;
         border-radius: 10px;
         background-color: pink;
-        margin-bottom: 3px;
+        margin-top: 5px;
       }:hover {
         background-color: #ff807f;
      }
     }
   }
+
+  .trips {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .tripItem {
+      display: grid;
+      grid-template-areas:
+              "a b"
+              "a c";
+      grid-gap: 15px;
+      grid-template-rows: 1fr 2fr;
+      grid-template-columns: 2fr 3fr;
+      border-radius: 10px;
+      border: solid rgba(243, 179, 180, 0.58);
+      box-shadow: 6px 5px rgba(211, 211, 211, 0.16);
+      .tripheader {
+        font-size: 1.3em;
+      }
+      .tripImg {
+        grid-area: a;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        img {
+          max-height: 250px;
+        }
+      }
+    }:hover {
+      background-color: rgba(161, 161, 161, 0.16);
+   }
+  }
+
+
+
 }

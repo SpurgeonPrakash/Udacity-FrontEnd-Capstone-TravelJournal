@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = {
@@ -19,15 +20,8 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.scss$/,
-                use: [
-                    // Creates `style` nodes from JS strings
-                    'style-loader',
-                    // Translates CSS into CommonJS
-                    'css-loader',
-                    // Compiles Sass to CSS
-                    'sass-loader',
-                ],
+                test: /\.(sa|sc|c)ss$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -55,5 +49,12 @@ module.exports = {
         // Automatically remove all unused webpack assets on rebuild
         cleanStaleWebpackAssets: true,
         protectWebpackAssets: false
-    })]
+    }),
+    new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+    })
+    ]
 }

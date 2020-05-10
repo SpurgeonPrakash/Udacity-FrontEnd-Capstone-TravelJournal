@@ -22,9 +22,12 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "flatpickr": "^4.6.3",
-    "node-sass": "^4.14.1"
+    "html-webpack-link-type-plugin": "^1.0.3",
+    "node-sass": "^4.14.1",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -35,6 +38,7 @@
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
     "resolve-url-loader": "^3.1.1",
     "sass": "^1.26.5",
     "sass-extract": "^2.1.0",
