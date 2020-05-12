@@ -1,9 +1,21 @@
 let timer;
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
+function dateDiffInDays(a, b) {
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+
+export const fetchWeatherIcons = async () => {
+    const url = `https://www.weatherbit.io/static/img/icons/t01d.png`;
+}
 
 export async function addTrip(event) {
     event.preventDefault();
-    const formItems = document.getElementById('travel-form').elements;
+    const form = document.getElementById('travel-form');
+    const formItems = form.elements;
     console.log(formItems);
     const locations = document.getElementsByName('zipCode');
     let selectedLocation;
@@ -30,6 +42,9 @@ export async function addTrip(event) {
 
         submitTravel(data).then(resp => {
             placeTrips(resp.data);
+            form.reset();
+            Client.main.cancelButton.click();
+            Client.main.options.innerHTML = '';
         }).catch(err => {
             console.log('err',err);
         })
@@ -101,17 +116,20 @@ export const placeTrips = (trips) => {
         console.log(trip);
         let tripItem = document.createElement('div');
         tripItem.className = 'tripItem';
+        tripItem.id = trip.id;
 
         let header = document.createElement('div');
         header.style.gridArea = 'b'
-        header.innerHTML = `<h3>${trip.destination.placename}</h3>`
-
+        header.innerHTML = `<h3>${trip.destination.locationName.toUpperCase()}</h3>`
+        handleWeather(trip, tripItem);
         let content = document.createElement('div');
         content.style.gridArea = 'c';
         let duration = document.createElement('p');
         duration.textContent = `Duration: ${trip.duration} Days.`
         let departure = document.createElement('p');
-        departure.textContent = `Departure: ${trip.departure}`
+        const until = dateDiffInDays(new Date(), new Date(trip.departure));
+        departure.textContent = until > 0 ? `Departure: ${trip.departure} - ${until} Days left` : `Departure: Was on  ${trip.departure} (Past trip)`
+
         let notes = document.createElement('article');
         notes.textContent = trip.notes;
 
@@ -135,4 +153,23 @@ export const placeTrips = (trips) => {
     Client.main.tripPanel.appendChild(panel);
 }
 
+const handleWeather = (trip, view) => {
+    const weatherView = document.createElement('div');
+    const curr = document.createElement('div');
+    curr.innerHTML = `<h4>Current Weather</h4>${trip.weather.data[0].temp} C`;
+    weatherView.className = 'tripWeather';
+    weatherView.appendChild(curr);
 
+    for(let i=0;i<trip.weather.data.length;i++){
+        if(trip.departure === trip.weather.data[i].datetime){
+            const forecasted = document.createElement('div');
+            forecasted.innerHTML = `<h4>Forecasted Weather on ${trip.weather.data[i].datetime}</h4>${trip.weather.data[i].temp} C`;
+            weatherView.appendChild(forecasted);
+        }
+    }
+
+    view.appendChild(weatherView);
+
+
+
+}

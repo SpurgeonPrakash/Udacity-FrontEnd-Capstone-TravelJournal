@@ -8,6 +8,8 @@
     border-radius: 10px;
     padding: 3px 5px;
     font-size: 1.3em;
+    max-width: 40%;
+    margin: auto;
   }
   .guide {
     display: flex;
@@ -15,6 +17,8 @@
   }
   .form-content {
     display: none;
+    width: 40%;
+    margin: auto;
     .form-group {
       display: flex;
       flex-direction: column;
@@ -54,17 +58,26 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-width: 70%;
+    margin: auto;
     .tripItem {
       display: grid;
       grid-template-areas:
-              "a b"
-              "a c";
+              "a b d d"
+              "a c d d";
       grid-gap: 15px;
       grid-template-rows: 1fr 2fr;
-      grid-template-columns: 2fr 3fr;
+      grid-template-columns: 1fr 5fr 1fr;
       border-radius: 10px;
+      margin: 5px auto;
       border: solid rgba(243, 179, 180, 0.58);
       box-shadow: 6px 5px rgba(211, 211, 211, 0.16);
+      @media only screen and (max-width: 600px) {
+        grid-template-areas:
+                "a b d"
+                "c c d";
+        grid-template-rows: 1fr 3fr;
+      }
       .tripheader {
         font-size: 1.3em;
       }
@@ -75,13 +88,31 @@
         justify-content: center;
         img {
           max-height: 250px;
+          max-width: 350px;
         }
+        @media only screen and (max-width: 600px) {
+          img {
+            max-height: 150px;
+            max-width: 150px;
+          }
+        }
+      }
+      .tripWeather {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        grid-area: d;
+        text-align: center;
       }
     }:hover {
       background-color: rgba(161, 161, 161, 0.16);
    }
   }
 
-
-
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 80%;
+    margin: auto;
+  }
 }
