@@ -3,22 +3,21 @@
   flex-direction: column;
   justify-content: center;
   margin: 20px auto;
+  align-items: center;
   //background-color: rgba(inherit, 0.3);
   button {
     border-radius: 10px;
     padding: 3px 5px;
     font-size: 1.3em;
-    max-width: 40%;
     margin: auto;
   }
   .guide {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .form-content {
     display: none;
-    width: 40%;
-    margin: auto;
     .form-group {
       display: flex;
       flex-direction: column;
@@ -54,12 +53,12 @@
   }
 
   .trips {
-    margin-top: 20px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     max-width: 70%;
-    margin: auto;
+    margin: 10px auto;
     .tripItem {
       display: grid;
       grid-template-areas:
@@ -77,9 +76,6 @@
                 "a b d"
                 "c c d";
         grid-template-rows: 1fr 3fr;
-      }
-      .tripheader {
-        font-size: 1.3em;
       }
       .tripImg {
         grid-area: a;
@@ -103,8 +99,11 @@
         justify-content: center;
         grid-area: d;
         text-align: center;
+        img {
+          max-width: 30px;
+        }
       }
-    }:hover {
+    } > :hover  {
       background-color: rgba(161, 161, 161, 0.16);
    }
   }
@@ -112,7 +111,11 @@
 }
 @media only screen and (max-width: 600px) {
   body {
-    width: 80%;
+    width: 90%;
     margin: auto;
+  }
+  .content .trips {
+    max-width: 95%;
+    padding: 5px;
   }
 }

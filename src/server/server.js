@@ -25,7 +25,7 @@ const getImage = async (imgName) => {
         url: `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${imgName}&image_type=photo&pretty=true`
     }
     return axios.get(options.url).then(resp => {
-        return resp.data.hits[0];
+        return resp.data.hits[0] ? resp.data.hits[0] : {webformatURL: 'https://dubsism.files.wordpress.com/2017/12/image-not-found.png'};
     }).catch(err => {
         return {message: err}
     })
@@ -34,7 +34,6 @@ const getImage = async (imgName) => {
 const getLocations = async (locationName) => {
     return axios.get(`http://api.geonames.org/postalCodeLookupJSON?username=${process.env.GEOLOCATION_KEY}&placename=${locationName}`)
         .then(resp => {
-            console.log(resp);
             const result = resp.data.postalcodes;
             return result.slice(0,4);
         })

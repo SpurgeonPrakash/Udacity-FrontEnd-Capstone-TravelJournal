@@ -5,9 +5,10 @@ function init() {
     const addButton = document.getElementById('addTrip');
     const formPanel = document.getElementById('form-content');
     const cancelButton = document.getElementById('cancel');
+    const saveButton = document.getElementById('save');
     const errorMessage = document.getElementById('errorMessage');
     const options = document.getElementById('options');
-    const tripPanel = document.getElementById('tripPanel')
+    const tripPanel = document.getElementById('tripPanel');
     flatpickr('#departure',{
         altInput: true,
         altFormat: "F j, Y",
@@ -29,7 +30,15 @@ function init() {
     })
 
 
-    return {addButton, formPanel, cancelButton, errorMessage, options, flatpickr, tripPanel}
+    return {
+        addButton,
+        formPanel,
+        cancelButton,
+        errorMessage,
+        options,
+        flatpickr,
+        tripPanel,
+        saveButton}
 }
 
 const getTrips = async () => {

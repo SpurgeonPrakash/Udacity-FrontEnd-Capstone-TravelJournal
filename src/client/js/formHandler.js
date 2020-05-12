@@ -8,10 +8,6 @@ function dateDiffInDays(a, b) {
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
-export const fetchWeatherIcons = async () => {
-    const url = `https://www.weatherbit.io/static/img/icons/t01d.png`;
-}
-
 export async function addTrip(event) {
     event.preventDefault();
     const form = document.getElementById('travel-form');
@@ -72,7 +68,7 @@ export const getLocationDetails = async (name) => {
 
     clearTimeout(timer);
     Client.main.errorMessage.textContent = '';
-
+    Client.main.saveButton.disabled = false;
     timer = setTimeout(async ()=>{
         const response = await fetch('http://localhost:8081/getLocationDetails/'+name);
 
@@ -81,7 +77,8 @@ export const getLocationDetails = async (name) => {
         Client.main.options.innerHTML = '';
         let createView = document.createDocumentFragment();
         if(results.length == 0){
-            Client.main.errorMessage.textContent = 'Place you entered was not found, please try a real world place'
+            Client.main.errorMessage.textContent = 'Place you entered was not found, please try a real world place';
+            Client.main.saveButton.disabled = true;
         }
 
         for(let i=0; i<results.length; i++){
@@ -153,17 +150,26 @@ export const placeTrips = (trips) => {
     Client.main.tripPanel.appendChild(panel);
 }
 
-const handleWeather = (trip, view) => {
+const handleWeather = async (trip, view) => {
     const weatherView = document.createElement('div');
     const curr = document.createElement('div');
+
     curr.innerHTML = `<h4>Current Weather</h4>${trip.weather.data[0].temp} C`;
     weatherView.className = 'tripWeather';
-    weatherView.appendChild(curr);
+    const currImg = document.createElement('img');
+    currImg.src = `https://www.weatherbit.io/static/img/icons/${trip.weather.data[0].weather.icon}.png`;
+    currImg.alt = trip.weather.data[0].weather.description;
 
+    curr.appendChild(currImg);
+    weatherView.appendChild(curr);
     for(let i=0;i<trip.weather.data.length;i++){
         if(trip.departure === trip.weather.data[i].datetime){
-            const forecasted = document.createElement('div');
+            let forecasted = document.createElement('div');
             forecasted.innerHTML = `<h4>Forecasted Weather on ${trip.weather.data[i].datetime}</h4>${trip.weather.data[i].temp} C`;
+            let forecastedImg = document.createElement('img');
+            forecastedImg.src = `https://www.weatherbit.io/static/img/icons/${trip.weather.data[0].weather.icon}.png`;
+            forecastedImg.alt = trip.weather.data[0].weather.description;
+            forecasted.appendChild(forecastedImg)
             weatherView.appendChild(forecasted);
         }
     }
