@@ -32,7 +32,8 @@ export async function addTrip(event) {
             destination: {
                 placename: selectedLocation[2],
                 locationName: formItems['destination'].value,
-                coordinates: [selectedLocation[0], selectedLocation[1]]
+                coordinates: [selectedLocation[0], selectedLocation[1]],
+                countryCode: selectedLocation[3]
             }
         }
 
@@ -64,13 +65,13 @@ const submitTravel = async (data) => {
     return await response.json();
 }
 //change env variables
-export const getLocationDetails = async (name) => {
+export const getLocationDetails = async (name, details) => {
 
     clearTimeout(timer);
     Client.main.errorMessage.textContent = '';
     Client.main.saveButton.disabled = false;
     timer = setTimeout(async ()=>{
-        const response = await fetch('http://localhost:8081/getLocationDetails/'+name);
+        const response = await fetch(`http://localhost:8081/getLocationDetails/${name}/${details ? true : false}`);
 
         let results = await response.json();
         console.log(results);
@@ -86,11 +87,11 @@ export const getLocationDetails = async (name) => {
             group.className = 'group';
             let option = document.createElement('input');
             let label = document.createElement('label');
-            label.textContent = `${results[i].placeName} - ${results[i].postalcode}`;
+            label.textContent = `${results[i].adminName1} / ${results[i].adminName2} - ${results[i].postalcode}`;
             option.type = 'radio';
             option.name = 'zipCode';
             if(i===0){option.checked = true}
-            option.value = `${results[i].lat},${results[i].lng},${results[i].placeName}`;
+            option.value = `${results[i].lat},${results[i].lng},${results[i].placeName},${results[i].countryCode}`;
             group.addEventListener('click', function () {
                 const input = this.getElementsByTagName('input')[0];
                 input.checked = true;
@@ -98,7 +99,6 @@ export const getLocationDetails = async (name) => {
             group.appendChild(option)
             group.appendChild(label)
             createView.appendChild(group);
-            if(i === 3){break;}
         }
 
 
@@ -137,11 +137,18 @@ export const placeTrips = (trips) => {
         img.alt = trip.destination.locationName;
         imageHolder.appendChild(img);
 
+        let deleteButton = document.createElement('button');
+        deleteButton.textContent = "delete";
+        deleteButton.addEventListener('click', () => {
+            deleteTrip(trip.id);
+        })
+
         content.appendChild(duration);
         content.appendChild(departure);
         content.appendChild(notes);
 
         tripItem.appendChild(header);
+        tripItem.appendChild(deleteButton);
         tripItem.appendChild(content);
         tripItem.appendChild(imageHolder);
         panel.appendChild(tripItem);
@@ -175,7 +182,18 @@ const handleWeather = async (trip, view) => {
     }
 
     view.appendChild(weatherView);
+}
 
-
-
+export const deleteTrip = async (id) => {
+    if(id) {
+        const response = await fetch('http://localhost:8081/deleteTrip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: id})
+        })
+        const data = await response.json();
+        placeTrips(data.data);
+    }
 }

@@ -26,8 +26,9 @@
                 </div>
                 <div class="form-group">
                     <label>Destination</label>
-                    <input type="text" placeholder="Enter a Destination" name="destination" oninput="Client.getLocationDetails(this.value)">
+                    <input type="text" placeholder="Enter a Destination" id="destination" name="destination" oninput="Client.getLocationDetails(this.value)">
                     <div id="options" class="options"></div>
+                    <div >Dont see what you are looking for? <a onclick="event.preventDefault();Client.getLocationDetails(document.getElementById('destination').value, true)" href="#">Click here</a></div>
                 </div>
                 <div class="form-group">
                     <label>Duration</label>

@@ -13,29 +13,44 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const db = [];
+let db = [];
 const idCount = () => {
     let start = 0;return () => {start++; return start;}
 }
 
 const incrementor = idCount();
 
-const getImage = async (imgName) => {
-    const options = {
-        url: `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${imgName}&image_type=photo&pretty=true`
-    }
-    return axios.get(options.url).then(resp => {
-        return resp.data.hits[0] ? resp.data.hits[0] : {webformatURL: 'https://dubsism.files.wordpress.com/2017/12/image-not-found.png'};
+const getCountryName = async (countryCode) => {
+    return axios.get(`https://restcountries.eu/rest/v2/alpha/${countryCode}`).then(resp => {
+        return getImage(resp.data.name);
     }).catch(err => {
         return {message: err}
     })
 }
 
-const getLocations = async (locationName) => {
+const getImage = (imgName) => {
+    const options = {
+        url: `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${imgName}&image_type=photo&pretty=true`
+    }
+    return axios.get(options.url).then(resp => {
+        // if data has a images then send a randomly selected img
+        // otherwise search for countryname and return a country pic
+        return resp.data.hits[0] ? resp.data.hits[Math.floor(Math.random() * Math.floor(resp.data.hits.length))] : false;
+    }).catch(err => {
+        return {message: err}
+    })
+}
+
+const getLocations = async (locationName, extra) => {
     return axios.get(`http://api.geonames.org/postalCodeLookupJSON?username=${process.env.GEOLOCATION_KEY}&placename=${locationName}`)
         .then(resp => {
             const result = resp.data.postalcodes;
-            return result.slice(0,4);
+            if(extra == 'true'){
+                return result;
+            } else {
+                return result.slice(0,5);
+            }
+
         })
         .catch(err => {
             return {message: 'Location not found'}
@@ -60,9 +75,9 @@ app.listen(process.env.PORT || PORT, () => {
 
 
 
-app.get('/getLocationDetails/:location', async (req, res) => {
+app.get('/getLocationDetails/:location/:extra', async (req, res) => {
     try {
-        const options = await getLocations(req.params.location);
+        const options = await getLocations(req.params.location, req.params.extra);
         res.status(200).send(options);
     } catch (e) {
         res.status(500).send({
@@ -76,8 +91,18 @@ app.post('/addTrip', async (req, res) => {
         const trip = req.body;
         console.log(trip);
         trip.id = incrementor();
-        trip.tripImg = await getImage(trip.destination.locationName);
-        trip.weather = await getForecast(trip.destination.coordinates);
+
+        trip.tripImg = getImage(trip.destination.locationName);
+        trip.weather = getForecast(trip.destination.coordinates);
+
+        [trip.tripImg , trip.weather] = await axios.all([trip.tripImg, trip.weather])
+            .then(axios.spread( (img, weather) => {
+            return [img , weather];
+        }))
+
+        trip.tripImg = trip.tripImg ? trip.tripImg : await getCountryName(trip.destination.countryCode);
+
+        console.log('t.img ', trip.tripImg);
         db.push(trip);
 
         res.status(200).send({
@@ -96,6 +121,24 @@ app.get('/getTrips', (req, res) => {
 
     res.status(200).send(db);
 
+})
+
+app.post('/deleteTrip', (req, res) => {
+    try {
+        console.log(req.body);
+        if(req.body.id) {
+            db = db.filter(obj => {
+                return obj.id != req.body.id;
+            })
+
+            res.status(200).send({data: db});
+        } else {
+            console.log('girdi')
+            throw new Error({err: 'id is required'});
+        }
+    } catch (e) {
+        res.status(500).send({err: e});
+    }
 })
 
 
