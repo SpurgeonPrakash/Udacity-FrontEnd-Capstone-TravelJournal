@@ -19,11 +19,13 @@
             <label>Click the button to start filing your first trip</label>
             <button id="addTrip">+ Add a new trip</button>
         </div>
-        <div class="form-content" id="form-content">
-            <form id="travel-form">
-                <div class="form-group" id="errorMessage">
+        <div class="error" id="errorMessage">
 
-                </div>
+        </div>
+        <div class="form-content" id="form-content">
+
+            <form id="travel-form">
+
                 <div class="form-group">
                     <label>Destination</label>
                     <input type="text" placeholder="Enter a Destination" id="destination" name="destination" oninput="Client.getLocationDetails(this.value)">

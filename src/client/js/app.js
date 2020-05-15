@@ -24,11 +24,10 @@ function init() {
         formPanel.style.display = 'none';
     })
 
-    getTrips().then(res => {
 
+    getTrips().then(res => {
         Client.placeTrips(res);
     })
-
 
     return {
         addButton,
@@ -42,10 +41,17 @@ function init() {
 }
 
 const getTrips = async () => {
-    const trips = await fetch('http://localhost:8081/getTrips');
-    const parsed = await trips.json();
+    try {
+        const trips = await fetch('http://localhost:8081/getTrips');
+        const parsed = await trips.json();
+        return parsed;
+    } catch (e) {
+        console.log('girdi')
+        Client.placeTrips(JSON.parse(localStorage.getItem('trips')));
+    }
 
-    return parsed;
+
+
 }
 
 module.exports = init();

@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LinkTypePlugin = require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
@@ -48,6 +48,6 @@ module.exports = {
         new LinkTypePlugin({
             '**/*.css' : 'text/css'
         }),
-
+        new WorkboxPlugin.GenerateSW()
     ]
 }
