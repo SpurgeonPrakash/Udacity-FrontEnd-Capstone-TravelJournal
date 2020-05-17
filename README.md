@@ -26,6 +26,4 @@ This app allows users to store some information such as travel notes, dates, des
 - LocalStorage and workbox-webpack-plugin is used for offline support
 
 ### Sample Images
-- <img src="sampleImages/travel-journal.PNG" width="200" src="main"/>
-- <img src="sampleImages/travel-journal2.PNG" width="200" src="add item"/>
-- <img src="sampleImages/travel-journal3.PNG" width="200" src="add item2"/>
+- <img src="sampleImages/travel-journal.PNG" width="400" src="main"/> <img src="sampleImages/travel-journal2.PNG" width="400" src="add item"/> <img src="sampleImages/travel-journal3.PNG" width="400" src="add item2"/>
