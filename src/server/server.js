@@ -140,6 +140,4 @@ app.post('/deleteTrip', (req, res) => {
         res.status(500).send({err: e});
     }
 })
-
-
-
+module.exports = app;
