@@ -1,10 +1,9 @@
 let timer;
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-
+const more = document.getElementById('more');
 function dateDiffInDays(a, b) {
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
@@ -21,9 +20,11 @@ export const addTrip = async (event) => {
         }
     }
 
-    console.log(selectedLocation);
 
-    if(formItems['duration'].value && formItems['destination'].value && formItems['departure'].value && selectedLocation){
+    if( formItems['duration'].value &&
+        formItems['destination'].value &&
+        formItems['departure'].value &&
+        selectedLocation){
 
         const data = {
             duration: formItems['duration'].value,
@@ -50,10 +51,11 @@ export const addTrip = async (event) => {
     } else {
 
         Client.main.errorMessage.innerHTML = '<h3>Please fill all the required areas</h3>'
+        Client.main.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'start'});
     }
 }
 
-const submitTravel = async (data) => {
+export const submitTravel = async (data) => {
 
     const response = await fetch('http://localhost:8081/addTrip', {
         method: 'POST',
@@ -65,7 +67,7 @@ const submitTravel = async (data) => {
 
     return await response.json();
 }
-//change env variables
+
 export const getLocationDetails = async (name, details) => {
 
     clearTimeout(timer);
@@ -76,9 +78,7 @@ export const getLocationDetails = async (name, details) => {
             const response = await fetch(`http://localhost:8081/getLocationDetails/${name}/${details ? true : false}`);
 
             let results = await response.json();
-            console.log(results);
             Client.main.options.innerHTML = '';
-            let createView = document.createDocumentFragment();
             if(results.length == 0){
                 Client.main.errorMessage.textContent = 'Place you entered was not found, please try a real world place';
                 Client.main.saveButton.disabled = true;
@@ -86,34 +86,28 @@ export const getLocationDetails = async (name, details) => {
                 Client.main.errorMessage.textContent = '';
                 Client.main.saveButton.disabled = false;
             }
-
+            let createView = document.createDocumentFragment();
             for(let i=0; i<results.length; i++){
                 let group = document.createElement('div');
-                group.className = 'group';
-                let option = document.createElement('input');
-                let label = document.createElement('label');
-                label.textContent = `${results[i].adminName1} / ${results[i].adminName2} - ${results[i].postalcode}`;
-                option.type = 'radio';
-                option.name = 'zipCode';
-                if(i===0){option.checked = true}
-                option.value = `${results[i].lat},${results[i].lng},${results[i].placeName},${results[i].countryCode}`;
+                group.className = 'group'
+                group.innerHTML =
+                    `<input type="radio" name="zipCode" value="${results[i].lat},${results[i].lng},${results[i].placeName},${results[i].countryCode}" />
+                        <label>${results[i].adminName1} / ${results[i].adminName2} - ${results[i].postalcode}, ${results[i].countryCode}</label>`
+
                 group.addEventListener('click', function () {
                     const input = this.getElementsByTagName('input')[0];
                     input.checked = true;
                 });
-                group.appendChild(option)
-                group.appendChild(label)
+
                 createView.appendChild(group);
             }
-
-
             Client.main.options.appendChild(createView);
+            details ? more.style.display = 'none' : more.style.display = 'block';
+
         } catch (e) {
             Client.main.options.innerHTML = '';
             Client.main.errorMessage.textContent = 'You dont seem to have an internet connection, please check your network'
         }
-        
-
     }, 500);
 }
 
@@ -123,7 +117,6 @@ export const placeTrips = (trips) => {
         Client.main.errorMessage.textContent = 'Ooops.. Something went wrong, possibly your internet? or our server.. Sorry :(';
     } else {
         trips.forEach(trip => {
-            console.log(trip);
             let tripItem = document.createElement('div');
             tripItem.className = 'tripItem';
             tripItem.id = trip.id;
@@ -150,8 +143,6 @@ export const placeTrips = (trips) => {
             img.src = trip.tripImg.webformatURL;
             img.alt = trip.destination.locationName;
             imageHolder.appendChild(img);
-
-
 
             content.appendChild(duration);
             content.appendChild(departure);
@@ -193,6 +184,7 @@ const handleWeather = async (trip, view) => {
     }
     let deleteButton = document.createElement('button');
     deleteButton.textContent = "Remove Trip";
+    deleteButton.className = 'warning';
     deleteButton.addEventListener('click', () => {
         deleteTrip(trip.id);
     })
@@ -213,7 +205,7 @@ export const deleteTrip = async (id) => {
             })
             const data = await response.json();
             placeTrips(data.data);
-            localStorage.setItem('trips',JSON.stringify(resp.data));
+            localStorage.setItem('trips',JSON.stringify(data.data));
         }
     }
 

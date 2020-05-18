@@ -9,6 +9,7 @@ function init() {
     const errorMessage = document.getElementById('errorMessage');
     const options = document.getElementById('options');
     const tripPanel = document.getElementById('tripPanel');
+    const form = document.getElementById('travel-form')
     flatpickr('#departure',{
         altInput: true,
         altFormat: "F j, Y",
@@ -21,6 +22,7 @@ function init() {
     })
     cancelButton.addEventListener('click', (event)=>{
         event.preventDefault();
+        form.reset();
         formPanel.style.display = 'none';
     })
 
@@ -28,6 +30,12 @@ function init() {
     getTrips().then(res => {
         Client.placeTrips(res);
     })
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then(function(reg) {});
+        });
+    }
+
 
     return {
         addButton,
@@ -37,21 +45,17 @@ function init() {
         options,
         flatpickr,
         tripPanel,
-        saveButton}
+        saveButton
+    }
 }
 
 const getTrips = async () => {
     try {
         const trips = await fetch('http://localhost:8081/getTrips');
-        const parsed = await trips.json();
-        return parsed;
+        return await trips.json();
     } catch (e) {
-        console.log('girdi')
         Client.placeTrips(JSON.parse(localStorage.getItem('trips')));
     }
-
-
-
 }
 
 module.exports = init();

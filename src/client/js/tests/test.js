@@ -1,8 +1,19 @@
 import {expect} from "@jest/globals";
 const request = require('supertest');
 import app from '../../../server/server';
+import {getLocationDetails, submitTravel} from '../formHandler';
 
-
+const trip = {
+    duration: 5,
+    departure: '01-16-1989',
+    notes: 'live, love , give',
+    destination: {
+        placename: 'istanbul',
+        locationName: 'istanbul',
+        coordinates: [34.515 , 104.1441],
+        countryCode: 'tr'
+    }
+}
 
 describe("GET / test", () => {
     test("GET: Trips It should respond with an array", async () => {
@@ -20,17 +31,7 @@ describe("GET / test", () => {
 
 describe("POST / test", () => {
     test("POST: Trip, it should return an Array response with posted trip included", async () => {
-        const trip = {
-            duration: 5,
-            departure: '01-16-1989',
-            notes: 'live, love , give',
-            destination: {
-                placename: 'istanbul',
-                locationName: 'istanbul',
-                coordinates: [34.515 , 104.1441],
-                countryCode: 'tr'
-            }
-        }
+
         const response = await request(app).post("/addTrip").send(trip);
         expect(response.body).toBeDefined();
         expect(response.body).toHaveProperty('data');
@@ -39,3 +40,12 @@ describe("POST / test", () => {
     });
 
 });
+
+describe('TEST UI Side...', () => {
+    test('getLocationDetails is defined', async () => {
+        expect(getLocationDetails).toBeDefined();
+    })
+    test('submit a trip', async () => {
+        expect(submitTravel).toBeDefined();
+    })
+})

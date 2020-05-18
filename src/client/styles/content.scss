@@ -1,3 +1,4 @@
+@import "main";
 .content {
   display: flex;
   flex-direction: column;
@@ -23,6 +24,10 @@
   }
   .form-content {
     display: none;
+    width: 30%;
+    .more {
+      display: none;
+    }
     .form-group {
       display: flex;
       flex-direction: column;
@@ -35,7 +40,6 @@
         padding: 5px;
         font-size: 1.2em;
       }
-
     }
     .form-actions {
       display: flex;
@@ -53,8 +57,8 @@
         border-radius: 10px;
         background-color: pink;
         margin-top: 5px;
-      }:hover {
-        background-color: #ff807f;
+      }>:hover {
+        background-color: #ffab97;
      }
     }
   }
@@ -72,9 +76,10 @@
               "a b d d"
               "a c d d";
       grid-gap: 15px;
-      grid-template-rows: 1fr 2fr;
+      grid-template-rows: auto 2fr;
       grid-template-columns: 1fr 5fr 1fr;
       border-radius: 10px;
+      padding: 20px;
       margin: 5px auto;
       border: solid rgba(243, 179, 180, 0.58);
       box-shadow: 6px 5px rgba(211, 211, 211, 0.16);
@@ -82,11 +87,9 @@
         grid-template-areas:
                 "a b d"
                 "c c d";
-        grid-template-rows: 1fr 3fr;
+        grid-template-rows: auto 3fr;
       }
       button {
-        background-color: rgba(255, 49, 31, 0.71);
-        color: rgba(255, 255, 255, 0.7);
         cursor: pointer;
         margin-top: 5px;
       }
@@ -112,7 +115,6 @@
         justify-content: space-around;
         grid-area: d;
         text-align: center;
-        margin: 4px auto;
         img {
           max-width: 30px;
         }
@@ -124,12 +126,12 @@
 
 }
 @media only screen and (max-width: 600px) {
-  body {
+
+  .content .trips {
     width: 90%;
     margin: auto;
   }
-  .content .trips {
-    max-width: 95%;
-    padding: 5px;
+  .content .form-content {
+    width: 70%;
   }
 }

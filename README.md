@@ -23,7 +23,7 @@ This app allows users to store some information such as travel notes, dates, des
 
 ### Notes
 - Webpack is configured for dev and prod environments
-- LocalStorage and workbox-webpack-plugin is used for offline support
+- LocalStorage and Service workers (workbox-webpack-plugin) is used for offline support
 
 ### Sample Images
 - <img src="sampleImages/travel-journal.PNG" width="400" src="main"/> <img src="sampleImages/travel-journal2.PNG" width="400" src="add item"/> <img src="sampleImages/travel-journal3.PNG" width="400" src="add item2"/>

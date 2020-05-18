@@ -2,11 +2,17 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LinkTypePlugin = require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
     mode: 'production',
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({}), new OptimizeCssAssetsPlugin({})],
+    },
     output: {
         library: 'Client',
         libraryTarget: 'var'
@@ -41,13 +47,14 @@ module.exports = {
             filename: "index.html"
         }),
         new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
             filename: '[name].css',
         }),
         new LinkTypePlugin({
             '**/*.css' : 'text/css'
         }),
-        new WorkboxPlugin.GenerateSW()
+        new WorkboxPlugin.GenerateSW({
+           clientsClaim: true,
+           skipWaiting: true,
+         }),
     ]
 }

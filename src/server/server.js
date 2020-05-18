@@ -1,7 +1,5 @@
 const express = require('express');
-const http = require('http');
 const axios = require('axios');
-const request = require('request');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
@@ -50,7 +48,6 @@ const getLocations = async (locationName, extra) => {
             } else {
                 return result.slice(0,5);
             }
-
         })
         .catch(err => {
             return {message: 'Location not found'}
@@ -89,20 +86,11 @@ app.get('/getLocationDetails/:location/:extra', async (req, res) => {
 app.post('/addTrip', async (req, res) => {
     try {
         const trip = req.body;
-        console.log(trip);
         trip.id = incrementor();
-
-        trip.tripImg = getImage(trip.destination.locationName);
-        trip.weather = getForecast(trip.destination.coordinates);
-
-        [trip.tripImg , trip.weather] = await axios.all([trip.tripImg, trip.weather])
-            .then(axios.spread( (img, weather) => {
-            return [img , weather];
-        }))
-
+        trip.tripImg = await getImage(trip.destination.locationName);
+        trip.weather = await getForecast(trip.destination.coordinates);
         trip.tripImg = trip.tripImg ? trip.tripImg : await getCountryName(trip.destination.countryCode);
 
-        console.log('t.img ', trip.tripImg);
         db.push(trip);
 
         res.status(200).send({
@@ -118,22 +106,17 @@ app.post('/addTrip', async (req, res) => {
 })
 
 app.get('/getTrips', (req, res) => {
-
     res.status(200).send(db);
-
 })
 
 app.post('/deleteTrip', (req, res) => {
     try {
-        console.log(req.body);
         if(req.body.id) {
             db = db.filter(obj => {
                 return obj.id != req.body.id;
             })
-
             res.status(200).send({data: db});
         } else {
-            console.log('girdi')
             throw new Error({err: 'id is required'});
         }
     } catch (e) {

@@ -3,12 +3,15 @@ $main-font: 'Baloo 2';
 $light-font: 400;
 $mid-font: 500;
 $bold-font: 600;
+$warning-color: rgba(255, 81, 76, 0.71);
+$primary-color: rgba(15, 191, 15, 0.98);
 
 * {
   font-family: $main-font;
 }
 body {
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   background: linear-gradient( 0.25turn , rgba(73, 185, 218, 0.57), #ebf8e1 , rgba(73, 185, 218, 0.57));
@@ -24,6 +27,40 @@ body {
       margin: auto;
     }
   }
+  button {
+    border: none;
+    box-shadow: 1px 2px rgba(169, 169, 169, 0.6);
+  }
+  button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
 }
 
+@mixin warning {
+  background-color: $warning-color;
+  color: white;
+}
+@mixin primary {
+  background-color: $primary-color;
+  color: white;
+}
+.warning {
+  @include warning;
+}
+.primary {
+  @include primary;
+}
+
+footer {
+  background-color: rgba(94, 43, 43, 0.69);
+  color: white;
+  text-align: center;
+  width: 100%;
+  z-index: 99;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 2px;
+}
 

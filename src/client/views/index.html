@@ -17,7 +17,7 @@
     <div class="content">
         <div class="guide">
             <label>Click the button to start filing your first trip</label>
-            <button id="addTrip">+ Add a new trip</button>
+            <button id="addTrip" class="primary">+ Add a new trip</button>
         </div>
         <div class="error" id="errorMessage">
 
@@ -27,17 +27,17 @@
             <form id="travel-form">
 
                 <div class="form-group">
-                    <label>Destination</label>
+                    <label>Destination *</label>
                     <input type="text" placeholder="Enter a Destination" id="destination" name="destination" oninput="Client.getLocationDetails(this.value)">
                     <div id="options" class="options"></div>
-                    <div >Dont see what you are looking for? <a onclick="event.preventDefault();Client.getLocationDetails(document.getElementById('destination').value, true)" href="#">Click here</a></div>
+                    <div class="more" id="more">Dont see what you are looking for? <a onclick="event.preventDefault();Client.getLocationDetails(document.getElementById('destination').value, true)" href="#">Click here</a></div>
                 </div>
                 <div class="form-group">
-                    <label>Duration</label>
+                    <label>Duration *</label>
                     <input type="number" placeholder="Days" name="duration">
                 </div>
                 <div class="form-group">
-                    <label>Departure Date</label>
+                    <label>Departure Date *</label>
                     <input type="text" class="flatpickr flatpickr-input" name="departure" id="departure">
                 </div>
                 <div class="form-group">
@@ -45,8 +45,8 @@
                     <textarea type="text" placeholder="General Notes about the trip" rows="7" name="notes"></textarea>
                 </div>
                 <div class="form-actions">
-                    <button id="save" onclick="Client.addTrip(event)">Save</button>
-                    <button id="cancel">Cancel</button>
+                    <button id="save" class="primary" onclick="Client.addTrip(event)">Save</button>
+                    <button id="cancel" class="warning">Cancel</button>
                 </div>
             </form>
         </div>
@@ -56,5 +56,8 @@
         </div>
 
     </div>
+    <footer>
+        Udacity FrontEnd NanoDegree Program | Capstone Project | Mustafa B.
+    </footer>
 </body>
 </html>
