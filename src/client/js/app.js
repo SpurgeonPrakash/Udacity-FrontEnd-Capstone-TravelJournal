@@ -30,11 +30,7 @@ function init() {
     getTrips().then(res => {
         Client.placeTrips(res);
     })
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then(function(reg) {});
-        });
-    }
+
 
 
     return {
